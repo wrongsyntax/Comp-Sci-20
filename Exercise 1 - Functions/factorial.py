@@ -6,4 +6,5 @@ def factorial(number):
 
 
 number = int(input("What number would you like the factorial of? "))
-print("The factorial of " + str(number) + " is " + str(factorial(number)))
+factorial = str(factorial(number))
+print("The factorial of {} is {}".format(number, factorial))

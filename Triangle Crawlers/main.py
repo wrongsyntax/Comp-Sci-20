@@ -23,7 +23,9 @@ def run_sim():
     while crawler_pos != possible_pos[3]:
         new_pos = random.randint(0, 3)
         if crawler_pos != new_pos and crawler_pos != last_pos:
+            # Stores the crawler position for later before moving it
             last_pos = crawler_pos
+            # Move the crawler
             crawler_pos = possible_pos[new_pos]
             age += 1
             age_list.append(age)
@@ -45,6 +47,7 @@ while sim_count != 0:
     sim_count -= 1
 
 print("Simulation complete.")
+# Calculate and find the values needed
 total_average = sum(averages) / len(averages)
 youngest = min(averages)
 oldest = max(averages)

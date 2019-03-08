@@ -6,6 +6,14 @@ sim_count = original_sim_count
 averages = []
 
 
+def estimate_time(num):
+    if num >= 100000:
+        estimate = num / 100000 + 1
+        print("The simulation should take approximately {} seconds.".format(estimate))
+    else:
+        print("The simulation should take less than a second.")
+
+
 def run_sim():
     crawler_pos = possible_pos[0]
     last_pos = crawler_pos
@@ -29,6 +37,7 @@ def run_sim():
     return average
 
 
+estimate_time(sim_count)
 print("Running simulation...")
 
 while sim_count != 0:

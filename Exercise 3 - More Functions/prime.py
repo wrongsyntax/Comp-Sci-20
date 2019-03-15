@@ -13,9 +13,9 @@ def test_prime(number):
         return True
 
 
-tested = test_prime(num)
+test = test_prime(num)
 
-if tested:
+if test:
     print("The number {} is prime.".format(num))
 else:
     print("The number {} is not prime.".format(num))

@@ -1,7 +1,7 @@
 num = int(input("Enter a number to check if it's prime: "))
 
 
-def test_prime(number):
+def is_prime(number):
     if number == 1:
         return False
     elif number == 2:
@@ -13,7 +13,7 @@ def test_prime(number):
         return True
 
 
-test = test_prime(num)
+test = is_prime(num)
 
 if test:
     print("The number {} is prime.".format(num))

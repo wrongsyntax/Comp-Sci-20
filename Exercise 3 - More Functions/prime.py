@@ -2,7 +2,7 @@ num = int(input("Enter a number to check if it's prime: "))
 
 
 def is_prime(number):
-    if number == 1:
+    if number == 1 or number == 0:
         return False
     elif number == 2:
         return True

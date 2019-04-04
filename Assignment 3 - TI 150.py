@@ -18,6 +18,22 @@ def percentify(number):
     return str(number/100)
 
 
+def add(first, second):
+    return float(first) + float(second)
+
+
+def multiply(first, second):
+    return float(first) * float(second)
+
+
+def divide(first, second):
+    return float(first) / float(second)
+
+
+def subtract(first, second):
+    return float(first) - float(second)
+
+
 window = sg.Window(
     'TI 150',
     default_button_element_size=(7, 4),
@@ -33,6 +49,7 @@ while True:
         break
     if event == 'CE':  # clear keys if clear button
         keys_entered = ''
+        window.FindElement('out').Update('')
     elif event == 'C':
         keys_entered = keys_entered[:-1]
     elif event == '%':
@@ -40,9 +57,36 @@ while True:
     elif event in '1234567890.':
         keys_entered = values['input']  # get what's been entered so far
         keys_entered += event  # add the new digit
+    elif event == '+':
+        first_val = keys_entered
+        keys_entered = ''
+        operation = '+'
+    elif event == '-':
+        first_val = keys_entered
+        keys_entered = ''
+        operation = '-'
+    elif event == '×':
+        first_val = keys_entered
+        keys_entered = ''
+        operation = '×'
+    elif event == '÷':
+        first_val = keys_entered
+        keys_entered = ''
+        operation = '÷'
     elif event == '=':
         keys_entered = values['input']
-        window.FindElement('out').Update(keys_entered)  # output the final string
+        if operation == '+':
+            answer = add(first_val, keys_entered)
+            window.FindElement('out').Update(answer)  # output the final string
+        elif operation == '-':
+            answer = subtract(first_val, keys_entered)
+            window.FindElement('out').Update(answer)
+        elif operation == '×':
+            answer = multiply(first_val, keys_entered)
+            window.FindElement('out').Update(answer)
+        elif operation == '÷':
+            answer = divide(first_val, keys_entered)
+            window.FindElement('out').Update(answer)
         keys_entered = ''
 
     window.FindElement('input').Update(keys_entered)  # change the window to reflect current key string

@@ -57,6 +57,7 @@ while True:
     elif event in '1234567890.':
         keys_entered = values['input']  # get what's been entered so far
         keys_entered += event  # add the new digit
+        operation = ''
     elif event == '+':
         first_val = keys_entered
         keys_entered = ''
@@ -85,8 +86,13 @@ while True:
             answer = multiply(first_val, keys_entered)
             window.FindElement('out').Update(answer)
         elif operation == '÷':
-            answer = divide(first_val, keys_entered)
-            window.FindElement('out').Update(answer)
+            if int(keys_entered) != 0:
+                answer = divide(first_val, keys_entered)
+                window.FindElement('out').Update(answer)
+            else:
+                window.FindElement('out').Update("ERROR: Divide by 0")
+        else:
+            window.FindElement('out').Update(keys_entered)
         keys_entered = ''
 
     window.FindElement('input').Update(keys_entered)  # change the window to reflect current key string

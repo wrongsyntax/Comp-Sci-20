@@ -3,7 +3,7 @@ import PySimpleGUI as sg
 layout = [
     [sg.Text("Texas Instruments", font=('Helvetica', 22), text_color='black', justification='center',
              background_color='white', relief=sg.RELIEF_RAISED)],
-    [sg.Input(size=(34, 44), do_not_clear=True, justification='left', key='input')],
+    [sg.Input(size=(23, 1), do_not_clear=True, justification='right', key='input', font=('Helvetica', 20))],
     [sg.Button('C'), sg.Button('CE'), sg.Button('%'), sg.Button('÷')],
     [sg.Button('7'), sg.Button('8'), sg.Button('9'), sg.Button('×')],
     [sg.Button('4'), sg.Button('5'), sg.Button('6'), sg.Button('-')],
@@ -36,7 +36,7 @@ def subtract(first, second):
 
 window = sg.Window(
     'TI 150',
-    default_button_element_size=(7, 4),
+    default_button_element_size=(10, 7),
     auto_size_buttons=False,
     grab_anywhere=False
 ).Layout(layout)
@@ -49,6 +49,7 @@ while True:
         break
     if event == 'CE':  # clear keys if clear button
         keys_entered = ''
+        operation = ''
         window.FindElement('out').Update('')
     elif event == 'C':
         keys_entered = keys_entered[:-1]

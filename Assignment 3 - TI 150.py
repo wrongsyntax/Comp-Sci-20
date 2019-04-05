@@ -1,15 +1,16 @@
 import PySimpleGUI as sg
 
 layout = [
-    [sg.Text("Texas Instruments", font=('Helvetica', 22), text_color='black', justification='center',
+    [sg.Input(size=(23, 1), do_not_clear=True, justification='right', key='input', font=('Digital-7', 25))],
+    [sg.Text("Texas Instruments", font=('Helvetica', 15), text_color='black', justification='center',
              background_color='white', relief=sg.RELIEF_RAISED)],
-    [sg.Input(size=(23, 1), do_not_clear=True, justification='right', key='input', font=('Helvetica', 20))],
     [sg.Button('C'), sg.Button('CE'), sg.Button('%'), sg.Button('÷')],
     [sg.Button('7'), sg.Button('8'), sg.Button('9'), sg.Button('×')],
     [sg.Button('4'), sg.Button('5'), sg.Button('6'), sg.Button('-')],
     [sg.Button('1'), sg.Button('2'), sg.Button('3'), sg.Button('+')],
-    [sg.Button('0'), sg.Button('.'), sg.Button('=')],
-    [sg.Text('', size=(15, 1), font=('Helvetica', 18), text_color='red', key='out')],
+    [sg.Button('0'), sg.Button('.'), sg.Button('=', size=(22, 7))],
+    [sg.Text('', size=(21, 1), font=('Helvetica', 18), text_color='red', key='out'),
+    sg.Text('TI 150', size=(5, 1), text_color='black', font=('Helvetica', 12))],
 ]
 
 
@@ -86,7 +87,7 @@ while True:
             answer = multiply(first_val, keys_entered)
             window.FindElement('out').Update(answer)
         elif operation == '÷':
-            if int(keys_entered) != 0:
+            if float(keys_entered) != 0:
                 answer = divide(first_val, keys_entered)
                 window.FindElement('out').Update(answer)
             else:

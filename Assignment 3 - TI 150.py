@@ -57,7 +57,6 @@ while True:
     elif event in '1234567890.':
         keys_entered = values['input']  # get what's been entered so far
         keys_entered += event  # add the new digit
-        operation = ''
     elif event == '+':
         first_val = keys_entered
         keys_entered = ''

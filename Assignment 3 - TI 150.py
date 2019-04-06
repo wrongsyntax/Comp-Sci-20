@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 
 layout = [
-    [sg.Input(size=(23, 1), do_not_clear=True, justification='right', key='input', font=('Digital-7', 25))],
+    [sg.Input(size=(14, 1), do_not_clear=True, justification='right', key='input', font=('Digital-7', 45))],
     [sg.Text("Texas Instruments", font=('Helvetica', 15), text_color='black', justification='center',
              background_color='white', relief=sg.RELIEF_RAISED)],
     [sg.Button('C'), sg.Button('CE'), sg.Button('%'), sg.Button('÷')],
@@ -37,7 +37,7 @@ def subtract(first, second):
 
 window = sg.Window(
     'TI 150',
-    default_button_element_size=(10, 7),
+    default_button_element_size=(11, 7),
     auto_size_buttons=False,
     grab_anywhere=False
 ).Layout(layout)

@@ -8,7 +8,7 @@ layout = [
     [sg.Button('7'), sg.Button('8'), sg.Button('9'), sg.Button('×')],
     [sg.Button('4'), sg.Button('5'), sg.Button('6'), sg.Button('-')],
     [sg.Button('1'), sg.Button('2'), sg.Button('3'), sg.Button('+')],
-    [sg.Button('0'), sg.Button('.'), sg.Button('=', size=(22, 7))],
+    [sg.Button('0'), sg.Button('.'), sg.Button('=', size=(25, 7))],
     [sg.Text('', size=(21, 1), font=('Helvetica', 18), text_color='red', key='out'),
     sg.Text('TI 150', size=(5, 1), text_color='black', font=('Helvetica', 12))],
 ]
@@ -50,6 +50,8 @@ while True:
         break
     if event == 'CE':  # clear keys if clear button
         keys_entered = ''
+        first_val = ''
+        answer = ''
         operation = ''
         window.FindElement('out').Update('')
     elif event == 'C':
@@ -79,21 +81,20 @@ while True:
         keys_entered = values['input']
         if operation == '+':
             answer = add(first_val, keys_entered)
-            window.FindElement('out').Update(answer)  # output the final string
+            keys_entered = answer
         elif operation == '-':
             answer = subtract(first_val, keys_entered)
-            window.FindElement('out').Update(answer)
+            keys_entered = answer
         elif operation == '×':
             answer = multiply(first_val, keys_entered)
-            window.FindElement('out').Update(answer)
+            keys_entered = answer
         elif operation == '÷':
             if float(keys_entered) != 0:
                 answer = divide(first_val, keys_entered)
-                window.FindElement('out').Update(answer)
+                keys_entered = answer
             else:
-                window.FindElement('out').Update("ERROR: Divide by 0")
-        else:
-            window.FindElement('out').Update(keys_entered)
-        keys_entered = ''
+                keys_entered = "ERROR: Divide by 0"
+        elif operation == '':
+            keys_entered = keys_entered
 
     window.FindElement('input').Update(keys_entered)  # change the window to reflect current key string

@@ -10,8 +10,7 @@ layout = [
     [PySimpleGUI.Button('4'), PySimpleGUI.Button('5'), PySimpleGUI.Button('6'), PySimpleGUI.Button('-')],
     [PySimpleGUI.Button('1'), PySimpleGUI.Button('2'), PySimpleGUI.Button('3'), PySimpleGUI.Button('+')],
     [PySimpleGUI.Button('0'), PySimpleGUI.Button('.'), PySimpleGUI.Button('=', size=(25, 7))],
-    [PySimpleGUI.Text('', size=(21, 1), font=('Helvetica', 18), text_color='red', key='out'),
-     PySimpleGUI.Text('TI 150', size=(5, 1), text_color='black', font=('Helvetica', 12))],
+    [PySimpleGUI.Text('TI 150', size=(38, 1), text_color='black', font=('Helvetica', 13), justification='right')],
 ]
 
 

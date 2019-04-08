@@ -15,24 +15,39 @@ layout = [
 
 
 def percentify(number):
-    number = float(number)
-    return str(number/100)
+    try:
+        number = float(number)
+        return str(number/100)
+    except ValueError:
+        return "ERROR"
 
 
 def add(first, second):
-    return float(first) + float(second)
+    try:
+        return float(first) + float(second)
+    except ValueError:
+        return "ERROR"
 
 
 def multiply(first, second):
-    return float(first) * float(second)
+    try:
+        return float(first) * float(second)
+    except ValueError:
+        return "ERROR"
 
 
 def divide(first, second):
-    return float(first) / float(second)
+    try:
+        return float(first) / float(second)
+    except ValueError:
+        return "ERROR"
 
 
 def subtract(first, second):
-    return float(first) - float(second)
+    try:
+        return float(first) - float(second)
+    except ValueError:
+        return "ERROR"
 
 
 # Initialize the window

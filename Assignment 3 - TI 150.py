@@ -36,6 +36,7 @@ def subtract(first, second):
     return float(first) - float(second)
 
 
+# Initialize the window
 window = PySimpleGUI.Window(
     'TI 150',
     default_button_element_size=(11, 7),

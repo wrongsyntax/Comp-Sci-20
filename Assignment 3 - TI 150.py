@@ -54,7 +54,6 @@ while True:
         first_val = ''
         answer = ''
         operation = ''
-        window.FindElement('out').Update('')
     elif event == 'C':
         keys_entered = keys_entered[:-1]
     elif event == '%':

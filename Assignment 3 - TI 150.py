@@ -104,11 +104,14 @@ while True:
             answer = multiply(first_val, keys_entered)
             keys_entered = answer
         elif operation == '÷':
-            if float(keys_entered) != 0:
-                answer = divide(first_val, keys_entered)
-                keys_entered = answer
-            else:
-                keys_entered = "ERROR: Divide by 0"
+            try:
+                if float(keys_entered) != 0:
+                    answer = divide(first_val, keys_entered)
+                    keys_entered = answer
+                else:
+                    keys_entered = "ERROR: Divide by 0"
+            except ValueError:
+                keys_entered = "ERROR"
         elif operation == '':
             keys_entered = keys_entered
 

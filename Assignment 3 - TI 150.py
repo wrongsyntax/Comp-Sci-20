@@ -4,7 +4,7 @@ layout = [
     # For best results, please download the Digital-7 font from https://www.dafont.com/digital-7.font
     [sg.Input(size=(14, 1), do_not_clear=True, justification='right', key='input', font=('Digital-7', 45))],
     [sg.Text("Texas Instruments", font=('Helvetica', 15), text_color='black', justification='center',
-                      background_color='white', relief=sg.RELIEF_RAISED)],
+             background_color='white', relief=sg.RELIEF_RAISED)],
     [sg.Button('C'), sg.Button('CE'), sg.Button('%'), sg.Button('÷')],
     [sg.Button('7'), sg.Button('8'), sg.Button('9'), sg.Button('×')],
     [sg.Button('4'), sg.Button('5'), sg.Button('6'), sg.Button('-')],

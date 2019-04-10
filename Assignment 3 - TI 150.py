@@ -60,6 +60,7 @@ window = PySimpleGUI.Window(
 
 # Loop forever reading the window's values, updating the Input field
 keys_entered = ''
+operation = ''
 while True:
     event, values = window.Read()  # read the window
     if event is None:  # if the X button clicked, just exit

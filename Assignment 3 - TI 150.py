@@ -1,16 +1,16 @@
-import PySimpleGUI  # Make sure to install PySimpleGUI before running with 'pip install pysimplegui' in a terminal
+import PySimpleGUI as sg  # Make sure to install PySimpleGUI before running with 'pip install pysimplegui' in a terminal
 
 layout = [
     # For best results, please download the Digital-7 font from https://www.dafont.com/digital-7.font
-    [PySimpleGUI.Input(size=(14, 1), do_not_clear=True, justification='right', key='input', font=('Digital-7', 45))],
-    [PySimpleGUI.Text("Texas Instruments", font=('Helvetica', 15), text_color='black', justification='center',
-                      background_color='white', relief=PySimpleGUI.RELIEF_RAISED)],
-    [PySimpleGUI.Button('C'), PySimpleGUI.Button('CE'), PySimpleGUI.Button('%'), PySimpleGUI.Button('÷')],
-    [PySimpleGUI.Button('7'), PySimpleGUI.Button('8'), PySimpleGUI.Button('9'), PySimpleGUI.Button('×')],
-    [PySimpleGUI.Button('4'), PySimpleGUI.Button('5'), PySimpleGUI.Button('6'), PySimpleGUI.Button('-')],
-    [PySimpleGUI.Button('1'), PySimpleGUI.Button('2'), PySimpleGUI.Button('3'), PySimpleGUI.Button('+')],
-    [PySimpleGUI.Button('0'), PySimpleGUI.Button('.'), PySimpleGUI.Button('=', size=(25, 7))],
-    [PySimpleGUI.Text('TI 150', size=(38, 1), text_color='black', font=('Helvetica', 13), justification='right')],
+    [sg.Input(size=(14, 1), do_not_clear=True, justification='right', key='input', font=('Digital-7', 45))],
+    [sg.Text("Texas Instruments", font=('Helvetica', 15), text_color='black', justification='center',
+                      background_color='white', relief=sg.RELIEF_RAISED)],
+    [sg.Button('C'), sg.Button('CE'), sg.Button('%'), sg.Button('÷')],
+    [sg.Button('7'), sg.Button('8'), sg.Button('9'), sg.Button('×')],
+    [sg.Button('4'), sg.Button('5'), sg.Button('6'), sg.Button('-')],
+    [sg.Button('1'), sg.Button('2'), sg.Button('3'), sg.Button('+')],
+    [sg.Button('0'), sg.Button('.'), sg.Button('=', size=(25, 7))],
+    [sg.Text('TI 150', size=(38, 1), text_color='black', font=('Helvetica', 13), justification='right')],
 ]
 
 
@@ -51,7 +51,7 @@ def subtract(first, second):
 
 
 # Initialize the window
-window = PySimpleGUI.Window(
+window = sg.Window(
     'TI 150',
     default_button_element_size=(11, 7),
     auto_size_buttons=False,

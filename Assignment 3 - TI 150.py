@@ -2,15 +2,15 @@ import PySimpleGUI as sg  # Make sure to install PySimpleGUI before running with
 
 layout = [
     # For best results, please download the Digital-7 font from https://www.dafont.com/digital-7.font
-    [sg.Input(size=(14, 1), do_not_clear=True, justification='right', key='input', font=('Digital-7', 45))],
+    [sg.Input(size=(16, 1), do_not_clear=True, justification='right', key='input', font=('Digital-7', 45))],
     [sg.Text("Texas Instruments", font=('Helvetica', 15), text_color='black', justification='center',
              background_color='white', relief=sg.RELIEF_RAISED)],
-    [sg.Button('C'), sg.Button('CE'), sg.Button('%'), sg.Button('÷')],
-    [sg.Button('7'), sg.Button('8'), sg.Button('9'), sg.Button('×')],
-    [sg.Button('4'), sg.Button('5'), sg.Button('6'), sg.Button('-')],
-    [sg.Button('1'), sg.Button('2'), sg.Button('3'), sg.Button('+')],
-    [sg.Button('0'), sg.Button('.'), sg.Button('=', size=(25, 7))],
-    [sg.Text('TI 150', size=(38, 1), text_color='black', font=('Helvetica', 13), justification='right')],
+    [sg.Button('C', font="Ariel 20"), sg.Button('CE', font="Ariel 20"), sg.Button('%', font="Ariel 20"), sg.Button('÷', font="Ariel 20")],
+    [sg.Button('7', font="Ariel 20"), sg.Button('8', font="Ariel 20"), sg.Button('9', font="Ariel 20"), sg.Button('×', font="Ariel 20")],
+    [sg.Button('4', font="Ariel 20"), sg.Button('5', font="Ariel 20"), sg.Button('6', font="Ariel 20"), sg.Button('-', font="Ariel 20")],
+    [sg.Button('1', font="Ariel 20"), sg.Button('2', font="Ariel 20"), sg.Button('3', font="Ariel 20"), sg.Button('+', font="Ariel 20")],
+    [sg.Button('0', font="Ariel 20"), sg.Button('.', font="Ariel 20"), sg.Button('=', font="Ariel 20", size=(13, 4))],
+    [sg.Text('TI 150', size=(44, 1), text_color='black', font=('Helvetica', 13), justification='right')],
 ]
 
 
@@ -53,7 +53,7 @@ def subtract(first, second):
 # Initialize the window
 window = sg.Window(
     'TI 150',
-    default_button_element_size=(11, 7),
+    default_button_element_size=(6, 4),
     auto_size_buttons=False,
     grab_anywhere=False
 ).Layout(layout)

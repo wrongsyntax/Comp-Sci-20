@@ -71,8 +71,8 @@ while True:
         first_val = ''
         answer = ''
         operation = ''
-    elif event == 'C':
-        keys_entered = keys_entered[:-1]
+    elif event == 'C':  # backspace button
+        keys_entered = keys_entered[:-1]  # removes last character of the string
     elif event == '%':
         keys_entered = percentify(keys_entered)
     elif event in '1234567890.':

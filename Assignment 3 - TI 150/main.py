@@ -115,7 +115,7 @@ while True:
                     answer = divide(first_val, keys_entered)
                     keys_entered = answer
                 else:
-                    keys_entered = "ERROR: Divide by 0"
+                    keys_entered = "ERROR"
             except ValueError:
                 keys_entered = "ERROR"
         elif operation == '':

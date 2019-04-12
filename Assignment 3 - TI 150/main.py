@@ -102,23 +102,20 @@ while True:
         keys_entered = values['input']
         if operation == '+':
             answer = add(first_val, keys_entered)
-            keys_entered = answer
         elif operation == '-':
             answer = subtract(first_val, keys_entered)
-            keys_entered = answer
         elif operation == '×':
             answer = multiply(first_val, keys_entered)
-            keys_entered = answer
         elif operation == '÷':
             try:
                 if float(keys_entered) != 0:
                     answer = divide(first_val, keys_entered)
-                    keys_entered = answer
                 else:
-                    keys_entered = "ERROR"
+                    answer = "ERROR"
             except ValueError:
-                keys_entered = "ERROR"
+                answer = "ERROR"
         elif operation == '':
-            keys_entered = keys_entered
+            answer = keys_entered
+        keys_entered = answer
 
     window.FindElement('input').Update(keys_entered)  # change the window to reflect current key string

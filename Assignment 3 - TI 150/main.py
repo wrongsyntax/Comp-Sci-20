@@ -14,7 +14,7 @@ layout = [
     [sg.Button('1', font="Ariel 20"), sg.Button('2', font="Ariel 20"), sg.Button('3', font="Ariel 20"),
      sg.Button('+', font="Ariel 20")],
     [sg.Button('0', font="Ariel 20"), sg.Button('.', font="Ariel 20"), sg.Button('=', font="Ariel 20", size=(13, 4))],
-    [sg.Text('TI 150', size=(44, 1), text_color='black', font=('Helvetica', 13), justification='right')],
+    [sg.Text('TI-150', size=(44, 1), text_color='black', font=('Helvetica', 13), justification='right')],
 ]
 
 

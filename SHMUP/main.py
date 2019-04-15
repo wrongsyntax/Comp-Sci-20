@@ -36,8 +36,8 @@ SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("SHMUP")
 
 
-# Player class
-class Player(pygame.sprite.Sprite):
+# Spaceship class
+class Spaceship(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((50, 40))
@@ -51,17 +51,24 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
-        self.speedx = 0
+        self.speed = 0
+        self.rotate = 0
 
     def update(self):
         # Move player left and right
-        self.speedx = 0
+        self.speed = 0
+        self.rotate = 0
         keystate = pygame.key.get_pressed()
+        if keystate[pygame.K_UP]:
+            self.speed = -5
+        if keystate[pygame.K_DOWN]:
+            self.speed = 5
         if keystate[pygame.K_LEFT]:
-            self.speedx = -5
+            self.rotate = 5
         if keystate[pygame.K_RIGHT]:
-            self.speedx = 5
-        self.rect.x += self.speedx
+            self.rotate = -5
+        self.rect.y += self.speed
+        self.image = pygame.transform.rotate(self.image, self.rotate)
 
         # Keep player on screen
         if self.rect.right > WIDTH:
@@ -75,8 +82,8 @@ class Player(pygame.sprite.Sprite):
         BULLETS.add(bullet)
 
 
-# Mob class for enemies
-class Mob(pygame.sprite.Sprite):
+# Meteor class for enemies
+class Meteor(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((30, 40))
@@ -123,11 +130,11 @@ class Bullet(pygame.sprite.Sprite):
 CLOCK = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
 MOBS = pygame.sprite.Group()
-PLAYER = Player()
+PLAYER = Spaceship()
 BULLETS = pygame.sprite.Group()
 all_sprites.add(PLAYER)
 for i in range(8):
-    m = Mob()
+    m = Meteor()
     all_sprites.add(m)
     MOBS.add(m)
 
@@ -153,7 +160,7 @@ while running:
     # Check to see if a bullet hit a mob
     hits = pygame.sprite.groupcollide(MOBS, BULLETS, True, True)
     for hit in hits:
-        m = Mob()
+        m = Meteor()
         all_sprites.add(m)
         MOBS.add(m)
 

@@ -36,6 +36,15 @@ SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("SHMUP")
 
 
+def rot_center(image, angle):
+    orig_rect = image.get_rect()
+    rot_image = pygame.transform.rotate(image, angle)
+    rot_rect = orig_rect.copy()
+    rot_rect.center = rot_image.get_rect().center
+    rot_image = rot_image.subsurface(rot_rect).copy()
+    return rot_image
+
+
 # Spaceship class
 class Spaceship(pygame.sprite.Sprite):
     def __init__(self):
@@ -68,7 +77,7 @@ class Spaceship(pygame.sprite.Sprite):
         if keystate[pygame.K_RIGHT]:
             self.rotate = -5
         self.rect.y += self.speed
-        self.image = pygame.transform.rotate(self.image, self.rotate)
+        self.image = rot_center(self.image, self.rotate)
 
         # Keep player on screen
         if self.rect.right > WIDTH:

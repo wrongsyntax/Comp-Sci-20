@@ -29,6 +29,8 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 PINK = (223, 0, 255)
 
+POINTS = 0
+
 # Initialize pygame and create window
 pygame.init()
 pygame.mixer.init()
@@ -175,6 +177,8 @@ while running:
         m = Meteor()
         all_sprites.add(m)
         MOBS.add(m)
+        POINTS += 1
+        print(POINTS)
 
     # Check to see if a mob hit the player
     hits = pygame.sprite.spritecollide(

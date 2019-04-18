@@ -35,15 +35,15 @@ pygame.mixer.init()
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("SHMUP")
 
-
+"""
 def rot_center(image, angle):
     orig_rect = image.get_rect()
     rot_image = pygame.transform.rotate(image, angle)
-    rot_rect = orig_rect.copy()
+    rot_rect = orig_rect.copy() 
     rot_rect.center = rot_image.get_rect().center
     rot_image = rot_image.subsurface(rot_rect).copy()
     return rot_image
-
+"""
 
 # Spaceship class
 class Spaceship(pygame.sprite.Sprite):
@@ -61,23 +61,26 @@ class Spaceship(pygame.sprite.Sprite):
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
         self.speed = 0
-        self.rotate = 0
+        # self.rotate = 0
 
     def update(self):
         # Move player left and right
         self.speed = 0
-        self.rotate = 0
+        # self.rotate = 0
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_UP]:
             self.speed = -5
         if keystate[pygame.K_DOWN]:
             self.speed = 5
         if keystate[pygame.K_LEFT]:
-            self.rotate = 5
+            # self.rotate = 5
+            self.speed = -5
         if keystate[pygame.K_RIGHT]:
-            self.rotate = -5
-        self.rect.y += self.speed
-        self.image = rot_center(self.image, self.rotate)
+            # self.rotate = -5
+            self.speed = 5
+        # self.rect.y += self.speed
+        # self.image = rot_center(self.image, self.rotate)
+        self.rect.x += self.speed
 
         # Keep player on screen
         if self.rect.right > WIDTH:

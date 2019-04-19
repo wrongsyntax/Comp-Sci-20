@@ -12,7 +12,7 @@ img_dir = os.path.join(game_dir, "img")
 # Load game graphics
 background = pygame.image.load(os.path.join(img_dir, 'starfield.png'))
 background_rect = background.get_rect()
-player_img = pygame.image.load(os.path.join(img_dir, "ship.png"))
+player_img_still = pygame.image.load(os.path.join(img_dir, "ship.png"))
 meteor_img = pygame.image.load(os.path.join(img_dir, "meteor.png"))
 bullet_img = pygame.image.load(os.path.join(img_dir, "laser.png"))
 
@@ -62,33 +62,40 @@ class Spaceship(pygame.sprite.Sprite):
 
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
-        self.speed = 0
+        self.speedx = 0
+        self.speedy = 0
         # self.rotate = 0
 
     def update(self):
         # Move player left and right
-        self.speed = 0
+        self.speedx = 0
+        self.speedy = 0
         # self.rotate = 0
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_UP]:
-            self.speed = -5
+            self.speedy = -5
         if keystate[pygame.K_DOWN]:
-            self.speed = 5
+            self.speedy = 5
         if keystate[pygame.K_LEFT]:
             # self.rotate = 5
-            self.speed = -5
+            self.speedx = -5
         if keystate[pygame.K_RIGHT]:
             # self.rotate = -5
-            self.speed = 5
+            self.speedx = 5
         # self.rect.y += self.speed
         # self.image = rot_center(self.image, self.rotate)
-        self.rect.x += self.speed
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
 
         # Keep player on screen
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
         if self.rect.left < 0:
             self.rect.left = 0
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > HEIGHT:
+            self.rect.bottom = HEIGHT
 
     def shoot(self):
         bullet = Bullet(self.rect.centerx, self.rect.top)

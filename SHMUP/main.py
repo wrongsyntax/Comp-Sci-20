@@ -12,7 +12,7 @@ img_dir = os.path.join(game_dir, "img")
 # Load game graphics
 background = pygame.image.load(os.path.join(img_dir, 'starfield.png'))
 background_rect = background.get_rect()
-player_img_still = pygame.image.load(os.path.join(img_dir, "ship.png"))
+player_img = pygame.image.load(os.path.join(img_dir, "ship.png"))
 meteor_img = pygame.image.load(os.path.join(img_dir, "meteor.png"))
 bullet_img = pygame.image.load(os.path.join(img_dir, "laser.png"))
 
@@ -46,6 +46,7 @@ def rot_center(image, angle):
     rot_image = rot_image.subsurface(rot_rect).copy()
     return rot_image
 """
+
 
 # Spaceship class
 class Spaceship(pygame.sprite.Sprite):

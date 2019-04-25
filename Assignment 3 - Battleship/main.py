@@ -19,7 +19,7 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 
-class Carrier(pygame.rect):
+class Carrier(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         # self.image = pygame.image.load(os.path.join(img_folder, "alien.png")).convert()
@@ -56,7 +56,7 @@ class Destroyer(pygame.sprite.Sprite):
 pygame.init()
 pygame.mixer.init()
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("GAME TITLE")
+pygame.display.set_caption("Battleship")
 CLOCK = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
 # PLAYER = Player()

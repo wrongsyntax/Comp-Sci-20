@@ -1,5 +1,6 @@
 import os
 import pygame
+import random
 import sys
 
 
@@ -32,6 +33,12 @@ for row in range(10):
         # Add a the number zero to the current row
         grid[row].append(0)
 
+
+def place_ship(size):
+    startx = random.randint(0, 9)
+    starty = random.randint(0, 9)
+    direction = random.randint(0, 1)
+    
 
 class Carrier(pygame.sprite.Sprite):
     def __init__(self):

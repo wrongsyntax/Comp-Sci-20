@@ -16,6 +16,7 @@ FPS = 30
 # Define colours
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+GRAY = (100, 100, 100)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
@@ -35,9 +36,6 @@ for row in range(10):
 class Carrier(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        # self.image = pygame.image.load(os.path.join(img_folder, "alien.png")).convert()
-        # self.image.set_colorkey(BLACK)
-        # self.rect = self.image.get_rect()
         self.size = 5
 
 
@@ -101,14 +99,14 @@ while running:
     all_sprites.update()
 
     # Draw / render
-    SCREEN.fill(BLACK)
+    SCREEN.fill(BLUE)
     all_sprites.draw(SCREEN)
     # Draw the grid
     for row in range(10):
         for column in range(10):
             color = WHITE
             if grid[row][column] == 1:
-                color = GREEN
+                color = GRAY
             pygame.draw.rect(SCREEN,
                              color,
                              [(MARGIN + BOX) * column + MARGIN,

@@ -7,8 +7,10 @@ import sys
 game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, 'resources')
 
-WIDTH = 360
-HEIGHT = 480
+WIDTH = 355
+HEIGHT = 355
+BOX = 30
+MARGIN = 5
 FPS = 30
 
 # Define colours
@@ -17,6 +19,17 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+
+grid = []
+# Loop for each row
+for row in range(10):
+    # For each row, create a list that will
+    # represent an entire row
+    grid.append([])
+    # Loop for each column
+    for column in range(10):
+        # Add a the number zero to the current row
+        grid[row].append(0)
 
 
 class Carrier(pygame.sprite.Sprite):
@@ -74,6 +87,15 @@ while running:
         # Check for closing window
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            # User clicks the mouse. Get the position
+            pos = pygame.mouse.get_pos()
+            # Change the x/y screen coordinates to grid coordinates
+            column = pos[0] // (BOX + MARGIN)
+            row = pos[1] // (BOX + MARGIN)
+            # Set that location to one
+            grid[row][column] = 1
+            print("Grid coordinates: ", row, column)
 
     # Update
     all_sprites.update()
@@ -81,6 +103,18 @@ while running:
     # Draw / render
     SCREEN.fill(BLACK)
     all_sprites.draw(SCREEN)
+    # Draw the grid
+    for row in range(10):
+        for column in range(10):
+            color = WHITE
+            if grid[row][column] == 1:
+                color = GREEN
+            pygame.draw.rect(SCREEN,
+                             color,
+                             [(MARGIN + BOX) * column + MARGIN,
+                              (MARGIN + BOX) * row + MARGIN,
+                              BOX,
+                              BOX])
 
     # After drawing everything, flip the display
     pygame.display.flip()

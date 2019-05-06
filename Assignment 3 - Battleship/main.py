@@ -38,7 +38,7 @@ def place_ship(size):
     startx = random.randint(0, 9)
     starty = random.randint(0, 9)
     direction = random.randint(0, 1)
-    
+
 
 class Carrier(pygame.sprite.Sprite):
     def __init__(self):

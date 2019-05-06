@@ -117,5 +117,7 @@ while True:
         elif operation == '':
             answer = keys_entered
         keys_entered = answer
+        if str(answer).endswith(".0"):
+            keys_entered = str(answer).replace(".0", "")
 
     window.FindElement('input').Update(keys_entered)  # change the window to reflect current key string

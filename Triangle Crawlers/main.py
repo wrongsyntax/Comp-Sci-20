@@ -1,7 +1,8 @@
 import random
 
 possible_pos = ["A", "B", "C", "D"]
-original_sim_count = int(input("How many crawlers would you like to simulate? "))
+original_sim_count = int(
+    input("How many crawlers would you like to simulate? "))
 sim_count = original_sim_count
 averages = []
 
@@ -51,5 +52,7 @@ print("Simulation complete.")
 total_average = sum(averages) / len(averages)
 youngest = min(averages)
 oldest = max(averages)
-print("The total average lifespan of {} crawlers is {} days.".format(original_sim_count, total_average))
-print("The youngest crawler to die was {} days old. The oldest to die was {} days old.".format(youngest, oldest))
+print("The total average lifespan of {} crawlers is {} days.".format(
+    original_sim_count, total_average))
+print("The youngest crawler to die was {} days old. The oldest to die was {} days old.".format(
+    youngest, oldest))

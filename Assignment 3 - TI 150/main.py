@@ -1,4 +1,5 @@
-import PySimpleGUI as sg  # Make sure to install PySimpleGUI before running with 'pip install pysimplegui' in a terminal
+# Make sure to install PySimpleGUI before running with 'pip install pysimplegui' in a terminal
+import PySimpleGUI as sg
 
 layout = [
     # For best results, please download the Digital-7 font from https://www.dafont.com/digital-7.font
@@ -13,15 +14,17 @@ layout = [
      sg.Button('-', font="Ariel 20")],
     [sg.Button('1', font="Ariel 20"), sg.Button('2', font="Ariel 20"), sg.Button('3', font="Ariel 20"),
      sg.Button('+', font="Ariel 20")],
-    [sg.Button('0', font="Ariel 20"), sg.Button('.', font="Ariel 20"), sg.Button('=', font="Ariel 20", size=(13, 4))],
-    [sg.Text('TI-150', size=(44, 1), text_color='black', font=('Helvetica', 13), justification='right')],
+    [sg.Button('0', font="Ariel 20"), sg.Button('.', font="Ariel 20"),
+     sg.Button('=', font="Ariel 20", size=(13, 4))],
+    [sg.Text('TI-150', size=(44, 1), text_color='black',
+             font=('Helvetica', 13), justification='right')],
 ]
 
 
 def percentify(number):
     try:
         number = float(number)
-        return str(number/100)
+        return str(number / 100)
     except ValueError:
         return "ERROR"
 
@@ -76,7 +79,8 @@ while True:
         answer = ''
         operation = ''
     elif event == 'C':  # backspace button
-        keys_entered = keys_entered[:-1]  # removes last character of the string
+        # removes last character of the string
+        keys_entered = keys_entered[:-1]
     elif event == '%':
         keys_entered = percentify(keys_entered)
     elif event in '1234567890.':
@@ -120,4 +124,5 @@ while True:
         if str(answer).endswith(".0"):
             keys_entered = str(answer).replace(".0", "")
 
-    window.FindElement('input').Update(keys_entered)  # change the window to reflect current key string
+    # change the window to reflect current key string
+    window.FindElement('input').Update(keys_entered)

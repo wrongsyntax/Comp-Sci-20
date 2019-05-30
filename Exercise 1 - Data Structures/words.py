@@ -7,7 +7,7 @@ number = int(input("Enter a number: "))
 def find_words(num, word_list):
     found = []
     for word in word_list:
-        if len(word) >= num:
+        if len(word) > num:
             found.append(word)
         else:
             pass

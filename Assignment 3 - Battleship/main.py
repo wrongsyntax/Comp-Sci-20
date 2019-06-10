@@ -1,36 +1,26 @@
-from array import *
-import random
+from random import randint
 
-possible_sizes = [2, 3, 3, 4, 5]
-board = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        ]
+board = []
+
+for i in range(7):
+    board.append(["O", "O", "O", "O", "O", "O", "O", ])
 
 
-def choose_row():
-    row = random.randint(0, 9)
-    return row
+def print_board(board_in):
+    for row in range(len(board_in)):
+        print(" ".join(board_in[row]))
 
 
-def choose_column():
-    column = random.randint(0, 9)
-    return column
+def random_row(board_in):
+  return randint(0, len(board_in)-1)
 
 
-def choose_size():
-    size = random.randint(len(possible_sizes))
-    return size
+def random_col(board_in):
+  return randint(0, len(board_in)-1)
 
 
-def choose_direction():
-    direction = random.randint(0, 1)
-    return direction
+ship_row = random_row(board)
+ship_col = random_col(board)
+
+
+print_board(board)

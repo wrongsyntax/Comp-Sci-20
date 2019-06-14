@@ -4,7 +4,7 @@ layout = [
     # For best results, please download the Digital-7 font from https://www.dafont.com/digital-7.font
     [sg.Input(size=(16, 1), do_not_clear=True, justification='right', key='input', font=('Digital-7', 45),
               text_color='darkorange')],
-    [sg.Image(filename='Assignment 3 - TI 150/texasinstruments.png')],
+    [sg.Image(filename='texasinstruments.png')],
     [sg.Button('C', font="Ariel 20"), sg.Button('CE', font="Ariel 20"), sg.Button('%', font="Ariel 20"),
      sg.Button('÷', font="Ariel 20")],
     [sg.Button('7', font="Ariel 20"), sg.Button('8', font="Ariel 20"), sg.Button('9', font="Ariel 20"),

@@ -26,18 +26,24 @@ def print_board(board_in):
 
 
 def random_row(board_in):
-    return randint(0, len(board_in)-1)
+    return randint(1, len(board_in)-1)
 
 
 def random_col(board_in):
-    return randint(0, len(board_in)-1)
+    return randint(1, len(board_in)-1)
 
 
-ship_row = random_row(board)
-ship_col = random_col(board)
-location = [ship_row, ship_col]
+ship_row1 = random_row(board)
+ship_col1 = random_col(board)
+location1 = [ship_row1, ship_col1]
 
-print("Ship located at: ({}, {})".format(ship_row, ship_col))
+ship_row2 = random_row(board)
+ship_col2 = random_col(board)
+location2 = [ship_row2, ship_col2]
+
+ship_row3 = random_row(board)
+ship_col3 = random_col(board)
+location3 = [ship_row3, ship_col3]
 
 print_board(board)
 
@@ -45,7 +51,11 @@ print_board(board)
 def guess_row():
     try:
         row = int(input("Guess row: "))
-        return row
+        while row < 1 or row > 7:
+            print("Enter a value between 1 and 7.")
+            row = int(input("Guess row: "))
+        else:
+            return row
     except ValueError:
         print("You did not enter a number. Please try again.")
         guess_row()
@@ -54,26 +64,53 @@ def guess_row():
 def guess_col():
     try:
         col = int(input("Guess col: "))
-        return col
+        while col < 1 or col > 7:
+            print("Enter a value between 1 and 7.")
+            col = int(input("Guess row: "))
+        else:
+            return col
     except ValueError:
         print("You did not enter a number. Please try again.")
-        exit(guess_col())
+        guess_col()
 
 
-row_guess = guess_row()
 col_guess = guess_col()
+row_guess = guess_row()
 guess = [row_guess, col_guess]
 
-guessed = False
+guessed = 0
 
-while not guessed:
-    if guess == location:
-        board[ship_row][ship_col] = "[X]"
+while guessed != 3:
+    if guess == location1:
+        board[ship_row1][ship_col1] = "[X]"
         print_board(board)
         print("You sunk a ship!")
-        guessed = True
+        guessed += 1
+        col_guess = guess_col()
+        row_guess = guess_row()
+        guess = [row_guess, col_guess]
+    elif guess == location2:
+        board[ship_row2][ship_col2] = "[X]"
+        print_board(board)
+        print("You sunk a ship!")
+        guessed += 1
+        col_guess = guess_col()
+        row_guess = guess_row()
+        guess = [row_guess, col_guess]
+    elif guess == location3:
+        board[ship_row3][ship_col3] = "[X]"
+        print_board(board)
+        print("You sunk a ship!")
+        guessed += 1
+        col_guess = guess_col()
+        row_guess = guess_row()
+        guess = [row_guess, col_guess]
     else:
         print("You missed! Guess again.")
         board[row_guess][col_guess] = "[M]"
         print_board(board)
-        guess = [guess_row(), guess_col()]
+        col_guess = guess_col()
+        row_guess = guess_row()
+        guess = [row_guess, col_guess]
+
+print("You sunk all the ships!")

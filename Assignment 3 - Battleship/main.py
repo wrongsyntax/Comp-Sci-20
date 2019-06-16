@@ -79,29 +79,35 @@ row_guess = guess_row()
 guess = [row_guess, col_guess]
 
 guessed = 0
+already_guessed1 = False
+already_guessed2 = False
+already_guessed3 = False
 
 while guessed != 3:
-    if guess == location1:
+    if guess == location1 and already_guessed1 is False:
         board[ship_row1][ship_col1] = "[X]"
         print_board(board)
         print("You sunk a ship!")
         guessed += 1
+        already_guessed1 = True
         col_guess = guess_col()
         row_guess = guess_row()
         guess = [row_guess, col_guess]
-    elif guess == location2:
+    elif guess == location2 and already_guessed2 is False:
         board[ship_row2][ship_col2] = "[X]"
         print_board(board)
         print("You sunk a ship!")
         guessed += 1
+        already_guessed2 = True
         col_guess = guess_col()
         row_guess = guess_row()
         guess = [row_guess, col_guess]
-    elif guess == location3:
+    elif guess == location3 and already_guessed3 is False:
         board[ship_row3][ship_col3] = "[X]"
         print_board(board)
         print("You sunk a ship!")
         guessed += 1
+        already_guessed3 = True
         col_guess = guess_col()
         row_guess = guess_row()
         guess = [row_guess, col_guess]

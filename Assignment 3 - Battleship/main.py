@@ -51,9 +51,9 @@ print_board(board)
 def guess_row():
     try:
         row = int(input("Guess row: "))
-        while row < 1 or row > 7:
-            print("Enter a value between 1 and 7.")
-            row = int(input("Guess row: "))
+        if row < 1 or row > 7:
+            print("Enter a number on the grid please.")
+            guess_col()
         else:
             return row
     except ValueError:
@@ -64,9 +64,9 @@ def guess_row():
 def guess_col():
     try:
         col = int(input("Guess col: "))
-        while col < 1 or col > 7:
-            print("Enter a value between 1 and 7.")
-            col = int(input("Guess row: "))
+        if col < 1 or col > 7:
+            print("Enter a number on the grid please.")
+            guess_col()
         else:
             return col
     except ValueError:

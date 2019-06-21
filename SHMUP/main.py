@@ -49,7 +49,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
         self.speedy = 0
-        # self.rotate = 0
+        self.health = 100
 
     def update(self):
         # Move player left and right
@@ -151,12 +151,30 @@ class Bullet(pygame.sprite.Sprite):
 font_name = pygame.font.match_font("Arial")
 
 
-def draw_text(surf, text, size, x, y):
+def draw_text(surface, text, size, x, y):
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(text, True, WHITE)
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
-    surf.blit(text_surface, text_rect)
+    surface.blit(text_surface, text_rect)
+
+
+def draw_health_bar(surface, x, y, percent):
+    if percent < 0:
+        percent = 0
+    BAR_LENGTH = 100
+    BAR_HEIGHT = 10
+    fill = (percent / 100) * BAR_LENGTH
+    outline = pygame.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
+    fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
+    pygame.draw.rect(surface, GREEN, fill_rect)
+    pygame.draw.rect(surface, WHITE, outline, 2)
+
+
+def spawn_mob():
+    m = Meteor()
+    all_sprites.add(m)
+    MOBS.add(m)
 
 
 # Load game graphics
@@ -192,9 +210,7 @@ for i in range(8):
     MOBS.add(m)
 
 for i in range(8):
-    m = Meteor()
-    all_sprites.add(m)
-    MOBS.add(m)
+    spawn_mob()
 score = 0
 
 pygame.mixer.music.play(loops=-1)
@@ -223,21 +239,23 @@ while running:
     for hit in hits:
         score += 50 - hit.radius
         random.choice(expl_sounds).play()
-        m = Meteor()
-        all_sprites.add(m)
-        MOBS.add(m)
+        spawn_mob()
 
     # Check to see if a mob hit the player
     hits = pygame.sprite.spritecollide(
-        PLAYER, MOBS, False, pygame.sprite.collide_circle)
-    if hits:
-        running = False
+        PLAYER, MOBS, True, pygame.sprite.collide_circle)
+    for hit in hits:
+        PLAYER.health -= hit.radius * 2
+        spawn_mob()
+        if PLAYER.health <= 0:
+            running = False
 
     # Draw / render
     SCREEN.fill(BLACK)
     SCREEN.blit(background, background_rect)
     all_sprites.draw(SCREEN)
     draw_text(SCREEN, str(score), 20, WIDTH / 2, 10)
+    draw_health_bar(SCREEN, 5, 5, PLAYER.health)
 
     # After drawing everything, flip the display
     pygame.display.flip()

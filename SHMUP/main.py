@@ -9,19 +9,7 @@ import pygame
 # Set up asset folder
 game_dir = os.path.dirname(__file__)
 img_dir = os.path.join(game_dir, "img")
-meteor_dir = os.path.join(img_dir)
-
-# Load game graphics
-background = pygame.image.load(os.path.join(img_dir, 'starfield.png'))
-background_rect = background.get_rect()
-player_img = pygame.image.load(os.path.join(img_dir, "ship.png"))
-bullet_img = pygame.image.load(os.path.join(img_dir, "laser.png"))
-meteor_images = []
-meteor_list = ['meteorGrey_big1.png', 'meteorGrey_big2.png', 'meteorGrey_big3.png', 'meteorGrey_big4.png',
-               'meteorGrey_med1.png', 'meteorGrey_med2.png', 'meteorGrey_small1.png', 'meteorGrey_small2.png',
-               'meteorGrey_tiny1.png', 'meteorGrey_tiny2.png']
-for img in meteor_list:
-    meteor_images.append(pygame.image.load(os.path.join(img_dir, img)))
+snd_dir = os.path.join(game_dir, "snd")
 
 WIDTH = 480
 HEIGHT = 600
@@ -36,7 +24,6 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 PINK = (223, 0, 255)
 
-POINTS = 0
 
 # Initialize pygame and create window
 pygame.init()
@@ -99,6 +86,7 @@ class Spaceship(pygame.sprite.Sprite):
         bullet = Bullet(self.rect.centerx, self.rect.top)
         all_sprites.add(bullet)
         BULLETS.add(bullet)
+        shoot_sound.play()
 
 
 # Meteor class for enemies
@@ -160,6 +148,38 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
+font_name = pygame.font.match_font("Arial")
+
+
+def draw_text(surf, text, size, x, y):
+    font = pygame.font.Font(font_name, size)
+    text_surface = font.render(text, True, WHITE)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    surf.blit(text_surface, text_rect)
+
+
+# Load game graphics
+background = pygame.image.load(os.path.join(img_dir, 'starfield.png'))
+background_rect = background.get_rect()
+player_img = pygame.image.load(os.path.join(img_dir, "ship.png"))
+bullet_img = pygame.image.load(os.path.join(img_dir, "laser.png"))
+meteor_images = []
+meteor_list = ['meteorGrey_big1.png', 'meteorGrey_big2.png', 'meteorGrey_big3.png', 'meteorGrey_big4.png',
+               'meteorGrey_med1.png', 'meteorGrey_med2.png', 'meteorGrey_small1.png', 'meteorGrey_small2.png',
+               'meteorGrey_tiny1.png', 'meteorGrey_tiny2.png']
+for img in meteor_list:
+    meteor_images.append(pygame.image.load(os.path.join(img_dir, img)))
+
+# Load game sounds
+shoot_sound = pygame.mixer.Sound(os.path.join(snd_dir, 'pew.wav'))
+expl_sounds = []
+for snd in ['expl3.wav', 'expl6.wav']:
+    expl_sounds.append(pygame.mixer.Sound(os.path.join(snd_dir, snd)))
+pygame.mixer.music.load(os.path.join(snd_dir, 'bg.ogg'))
+pygame.mixer.music.set_volume(0.4)
+
+
 CLOCK = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
 MOBS = pygame.sprite.Group()
@@ -170,6 +190,14 @@ for i in range(8):
     m = Meteor()
     all_sprites.add(m)
     MOBS.add(m)
+
+for i in range(8):
+    m = Meteor()
+    all_sprites.add(m)
+    MOBS.add(m)
+score = 0
+
+pygame.mixer.music.play(loops=-1)
 
 # Game loop
 running = True
@@ -193,11 +221,11 @@ while running:
     # Check to see if a bullet hit a mob
     hits = pygame.sprite.groupcollide(MOBS, BULLETS, True, True)
     for hit in hits:
+        score += 50 - hit.radius
+        random.choice(expl_sounds).play()
         m = Meteor()
         all_sprites.add(m)
         MOBS.add(m)
-        POINTS += 1
-        print(POINTS)
 
     # Check to see if a mob hit the player
     hits = pygame.sprite.spritecollide(
@@ -209,6 +237,7 @@ while running:
     SCREEN.fill(BLACK)
     SCREEN.blit(background, background_rect)
     all_sprites.draw(SCREEN)
+    draw_text(SCREEN, str(score), 20, WIDTH / 2, 10)
 
     # After drawing everything, flip the display
     pygame.display.flip()

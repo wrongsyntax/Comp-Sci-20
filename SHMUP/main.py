@@ -1,20 +1,27 @@
 # SHMUP BY UZAIR TARIQ #
 
 import os
-import pygame
 import random
+
+import pygame
 
 
 # Set up asset folder
 game_dir = os.path.dirname(__file__)
 img_dir = os.path.join(game_dir, "img")
+meteor_dir = os.path.join(img_dir)
 
 # Load game graphics
 background = pygame.image.load(os.path.join(img_dir, 'starfield.png'))
 background_rect = background.get_rect()
 player_img = pygame.image.load(os.path.join(img_dir, "ship.png"))
-meteor_img = pygame.image.load(os.path.join(img_dir, "meteor.png"))
 bullet_img = pygame.image.load(os.path.join(img_dir, "laser.png"))
+meteor_images = []
+meteor_list = ['meteorGrey_big1.png', 'meteorGrey_big2.png', 'meteorGrey_big3.png', 'meteorGrey_big4.png',
+               'meteorGrey_med1.png', 'meteorGrey_med2.png', 'meteorGrey_small1.png', 'meteorGrey_small2.png',
+               'meteorGrey_tiny1.png', 'meteorGrey_tiny2.png']
+for img in meteor_list:
+    meteor_images.append(pygame.image.load(os.path.join(img_dir, img)))
 
 WIDTH = 480
 HEIGHT = 600
@@ -36,16 +43,6 @@ pygame.init()
 pygame.mixer.init()
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("SHMUP")
-
-"""
-def rot_center(image, angle):
-    orig_rect = image.get_rect()
-    rot_image = pygame.transform.rotate(image, angle)
-    rot_rect = orig_rect.copy() 
-    rot_rect.center = rot_image.get_rect().center
-    rot_image = rot_image.subsurface(rot_rect).copy()
-    return rot_image
-"""
 
 
 # Spaceship class
@@ -109,18 +106,19 @@ class Meteor(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((30, 40))
-        self.image = meteor_img
-        self.image = pygame.transform.scale(meteor_img, (65, 50))
+        self.image_orig = random.choice(meteor_images)
+        self.image = self.image_orig.copy()
         self.rect = self.image.get_rect()
-
-        # Collision Test
-        self.radius = 40
-        # pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
+        self.radius = int(self.rect.width * .85 / 2)
 
         self.rect.x = random.randrange(WIDTH - self.rect.width)
         self.rect.y = random.randrange(-100, -40)
         self.speedy = random.randrange(1, 8)
         self.speedx = random.randrange(-3, 3)
+
+        self.rot = 0
+        self.rot_speed = random.randrange(-8, 8)
+        self.last_update = pygame.time.get_ticks()
 
     def update(self):
         self.rect.x += self.speedx
@@ -129,6 +127,19 @@ class Meteor(pygame.sprite.Sprite):
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(-100, -40)
             self.speedy = random.randrange(1, 8)
+
+        self.rotate()
+
+    def rotate(self):
+        now = pygame.time.get_ticks()
+        if now - self.last_update > 50:
+            self.last_update = now
+            self.rot = (self.rot + self.rot_speed) % 360
+            new_image = pygame.transform.rotate(self.image_orig, self.rot)
+            old_center = self.rect.center
+            self.image = new_image
+            self.rect = self.image.get_rect()
+            self.rect.center = old_center
 
 
 class Bullet(pygame.sprite.Sprite):

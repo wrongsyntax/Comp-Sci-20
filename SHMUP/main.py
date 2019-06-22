@@ -32,7 +32,6 @@ SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("SHMUP")
 
 
-# Spaceship class
 class Spaceship(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -91,7 +90,6 @@ class Spaceship(pygame.sprite.Sprite):
             shoot_sound.play()
 
 
-# Meteor class for enemies
 class Meteor(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -150,6 +148,31 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
+class Explosion(pygame.sprite.Sprite):
+    def __init__(self, center, size):
+        pygame.sprite.Sprite.__init__(self)
+        self.size = size
+        self.image = explosion_anim[self.size][0]
+        self.rect = self.image.get_rect()
+        self.rect.center = center
+        self.frame = 0
+        self.last_update = pygame.time.get_ticks()
+        self.frame_rate = 25
+
+    def update(self):
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.frame_rate:
+            self.last_update = now
+            self.frame += 1
+            if self.frame == len(explosion_anim[self.size]):
+                self.kill()
+            else:
+                center = self.rect.center
+                self.image = explosion_anim[self.size][self.frame]
+                self.rect = self.image.get_rect()
+                self.rect.center = center
+
+
 font_name = pygame.font.match_font("Arial")
 
 
@@ -179,6 +202,11 @@ def spawn_mob():
     MOBS.add(m)
 
 
+def spawn_expl(size):
+    expl = Explosion(hit.rect.center, size)
+    all_sprites.add(expl)
+
+
 # Load game graphics
 background = pygame.image.load(os.path.join(img_dir, 'starfield.png'))
 background_rect = background.get_rect()
@@ -190,6 +218,19 @@ meteor_list = ['meteorGrey_big1.png', 'meteorGrey_big2.png', 'meteorGrey_big3.pn
                'meteorGrey_tiny1.png', 'meteorGrey_tiny2.png']
 for img in meteor_list:
     meteor_images.append(pygame.image.load(os.path.join(img_dir, img)))
+
+# Load explosion images
+explosion_anim = {}
+explosion_anim['lg'] = []
+explosion_anim['sm'] = []
+for i in range(9):
+    filename = "explosion{}.png".format(i)
+    img = pygame.image.load(os.path.join(img_dir, filename))
+    img.set_colorkey(BLACK)
+    img_lg = pygame.transform.scale(img, (65, 65))
+    explosion_anim['lg'].append(img_lg)
+    img_sm = pygame.transform.scale(img, (32, 32))
+    explosion_anim['sm'].append(img_sm)
 
 # Load game sounds
 shoot_sound = pygame.mixer.Sound(os.path.join(snd_dir, 'pew.wav'))
@@ -238,6 +279,7 @@ while running:
     for hit in hits:
         score += 50 - hit.radius
         random.choice(expl_sounds).play()
+        spawn_expl('lg')
         spawn_mob()
 
     # Check to see if a mob hit the player
@@ -245,6 +287,7 @@ while running:
         PLAYER, MOBS, True, pygame.sprite.collide_circle)
     for hit in hits:
         PLAYER.health -= hit.radius * 2
+        spawn_expl('sm')
         spawn_mob()
         if PLAYER.health <= 0:
             running = False

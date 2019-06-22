@@ -2,7 +2,6 @@
 
 import os
 import random
-
 import pygame
 
 
@@ -23,7 +22,6 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 PINK = (223, 0, 255)
-
 
 # Initialize pygame and create window
 pygame.init()
@@ -49,6 +47,9 @@ class Spaceship(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         self.health = 100
+        self.lives = 3
+        self.hidden = False
+        self.hide_timer = pygame.time.get_ticks()
         self.shoot_delay = 250
         self.last_shot = pygame.time.get_ticks()
 
@@ -57,28 +58,24 @@ class Spaceship(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         keystate = pygame.key.get_pressed()
-        if keystate[pygame.K_UP]:
+        if keystate[pygame.K_UP] and self.rect.top > 0:
             self.speedy = -5
-        if keystate[pygame.K_DOWN]:
+        if keystate[pygame.K_DOWN] and self.rect.bottom < HEIGHT:
             self.speedy = 5
-        if keystate[pygame.K_LEFT]:
+        if keystate[pygame.K_LEFT] and self.rect.left > 0:
             self.speedx = -5
-        if keystate[pygame.K_RIGHT]:
+        if keystate[pygame.K_RIGHT] and self.rect.right < WIDTH:
             self.speedx = 5
         if keystate[pygame.K_SPACE]:
             self.shoot()
         self.rect.x += self.speedx
         self.rect.y += self.speedy
 
-        # Keep player on screen
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.top < 0:
-            self.rect.top = 0
-        if self.rect.bottom > HEIGHT:
-            self.rect.bottom = HEIGHT
+        # Unhide if hidden
+        if self.hidden and pygame.time.get_ticks() - self.hide_timer > 1000:
+            self.hidden = False
+            self.rect.centerx = WIDTH / 2
+            self.rect.bottom = HEIGHT - 10
 
     def shoot(self):
         now = pygame.time.get_ticks()
@@ -88,6 +85,12 @@ class Spaceship(pygame.sprite.Sprite):
             all_sprites.add(bullet)
             BULLETS.add(bullet)
             shoot_sound.play()
+
+    def hide(self):
+        # hide the player temporarily
+        self.hidden = True
+        self.hide_timer = pygame.time.get_ticks()
+        self.rect.center = (WIDTH / 2, HEIGHT + 1000)
 
 
 class Meteor(pygame.sprite.Sprite):
@@ -149,9 +152,9 @@ class Bullet(pygame.sprite.Sprite):
 
 
 class Explosion(pygame.sprite.Sprite):
-    def __init__(self, center, size):
+    def __init__(self, center, type):
         pygame.sprite.Sprite.__init__(self)
-        self.size = size
+        self.size = type
         self.image = explosion_anim[self.size][0]
         self.rect = self.image.get_rect()
         self.rect.center = center
@@ -196,14 +199,22 @@ def draw_health_bar(surface, x, y, percent):
     pygame.draw.rect(surface, WHITE, outline, 2)
 
 
+def draw_lives(surf, x, y, lives, img):
+    for i in range(lives):
+        img_rect = img.get_rect()
+        img_rect.x = x + 30 * i
+        img_rect.y = y
+        surf.blit(img, img_rect)
+
+
 def spawn_mob():
     m = Meteor()
     all_sprites.add(m)
     MOBS.add(m)
 
 
-def spawn_expl(size):
-    expl = Explosion(hit.rect.center, size)
+def spawn_expl(target, type):
+    expl = Explosion(target.rect.center, type)
     all_sprites.add(expl)
 
 
@@ -211,6 +222,8 @@ def spawn_expl(size):
 background = pygame.image.load(os.path.join(img_dir, 'starfield.png'))
 background_rect = background.get_rect()
 player_img = pygame.image.load(os.path.join(img_dir, "ship.png"))
+player_mini_img = pygame.transform.scale(player_img, (25, 19))
+player_mini_img.set_colorkey(BLACK)
 bullet_img = pygame.image.load(os.path.join(img_dir, "laser.png"))
 meteor_images = []
 meteor_list = ['meteorGrey_big1.png', 'meteorGrey_big2.png', 'meteorGrey_big3.png', 'meteorGrey_big4.png',
@@ -223,6 +236,7 @@ for img in meteor_list:
 explosion_anim = {}
 explosion_anim['lg'] = []
 explosion_anim['sm'] = []
+explosion_anim['player'] = []
 for i in range(9):
     filename = "explosion{}.png".format(i)
     img = pygame.image.load(os.path.join(img_dir, filename))
@@ -231,6 +245,10 @@ for i in range(9):
     explosion_anim['lg'].append(img_lg)
     img_sm = pygame.transform.scale(img, (32, 32))
     explosion_anim['sm'].append(img_sm)
+    filename = 'playerExplosion{}.png'.format(i)
+    img = pygame.image.load(os.path.join(img_dir, filename)).convert()
+    img.set_colorkey(BLACK)
+    explosion_anim['player'].append(img)
 
 # Load game sounds
 shoot_sound = pygame.mixer.Sound(os.path.join(snd_dir, 'pew.wav'))
@@ -239,7 +257,6 @@ for snd in ['expl3.wav', 'expl6.wav']:
     expl_sounds.append(pygame.mixer.Sound(os.path.join(snd_dir, snd)))
 pygame.mixer.music.load(os.path.join(snd_dir, 'bg.ogg'))
 pygame.mixer.music.set_volume(0.4)
-
 
 CLOCK = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
@@ -259,6 +276,7 @@ score = 0
 pygame.mixer.music.play(loops=-1)
 
 # Game loop
+game_over = True
 running = True
 
 while running:
@@ -279,7 +297,7 @@ while running:
     for hit in hits:
         score += 50 - hit.radius
         random.choice(expl_sounds).play()
-        spawn_expl('lg')
+        spawn_expl(hit, 'lg')
         spawn_mob()
 
     # Check to see if a mob hit the player
@@ -287,9 +305,17 @@ while running:
         PLAYER, MOBS, True, pygame.sprite.collide_circle)
     for hit in hits:
         PLAYER.health -= hit.radius * 2
-        spawn_expl('sm')
+        spawn_expl(hit, 'sm')
         spawn_mob()
         if PLAYER.health <= 0:
+            death_explosion = Explosion(PLAYER.rect.center, 'player')
+            all_sprites.add(death_explosion)
+            PLAYER.hide()
+            PLAYER.lives -= 1
+            PLAYER.health = 100
+
+        # if the player died and the explosion has finished playing
+        if PLAYER.lives == 0 and not death_explosion.alive():
             running = False
 
     # Draw / render
@@ -298,6 +324,7 @@ while running:
     all_sprites.draw(SCREEN)
     draw_text(SCREEN, str(score), 20, WIDTH / 2, 10)
     draw_health_bar(SCREEN, 5, 5, PLAYER.health)
+    draw_lives(SCREEN, WIDTH - 100, 5, PLAYER.lives, player_mini_img)
 
     # After drawing everything, flip the display
     pygame.display.flip()

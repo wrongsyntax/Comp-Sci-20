@@ -218,6 +218,23 @@ def spawn_expl(target, type):
     all_sprites.add(expl)
 
 
+def show_go_screen():
+    SCREEN.blit(background, background_rect)
+    draw_text(SCREEN, "SHMUP!", 64, WIDTH / 2, HEIGHT / 4)
+    draw_text(SCREEN, "Arrow keys move, Space to fire", 22,
+              WIDTH / 2, HEIGHT / 2)
+    draw_text(SCREEN, "Press a key to begin", 18, WIDTH / 2, HEIGHT * 3 / 4)
+    pygame.display.flip()
+    waiting = True
+    while waiting:
+        CLOCK.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYUP:
+                waiting = False
+
+
 # Load game graphics
 background = pygame.image.load(os.path.join(img_dir, 'starfield.png'))
 background_rect = background.get_rect()
@@ -280,6 +297,19 @@ game_over = True
 running = True
 
 while running:
+    if game_over:
+        show_go_screen()
+        game_over = False
+        all_sprites = pygame.sprite.Group()
+        MOBS = pygame.sprite.Group()
+        BULLETS = pygame.sprite.Group()
+        PLAYER = Spaceship()
+        all_sprites.add(PLAYER)
+        for i in range(8):
+            spawn_mob()
+        score = 0
+    game_over = False
+
     # Keep loop running at this speed
     CLOCK.tick(FPS)
 
@@ -316,7 +346,7 @@ while running:
 
         # if the player died and the explosion has finished playing
         if PLAYER.lives == 0 and not death_explosion.alive():
-            running = False
+            game_over = True
 
     # Draw / render
     SCREEN.fill(BLACK)

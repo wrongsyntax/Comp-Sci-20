@@ -50,25 +50,24 @@ class Spaceship(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         self.health = 100
+        self.shoot_delay = 250
+        self.last_shot = pygame.time.get_ticks()
 
     def update(self):
-        # Move player left and right
+        # Move player
         self.speedx = 0
         self.speedy = 0
-        # self.rotate = 0
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_UP]:
             self.speedy = -5
         if keystate[pygame.K_DOWN]:
             self.speedy = 5
         if keystate[pygame.K_LEFT]:
-            # self.rotate = 5
             self.speedx = -5
         if keystate[pygame.K_RIGHT]:
-            # self.rotate = -5
             self.speedx = 5
-        # self.rect.y += self.speed
-        # self.image = rot_center(self.image, self.rotate)
+        if keystate[pygame.K_SPACE]:
+            self.shoot()
         self.rect.x += self.speedx
         self.rect.y += self.speedy
 
@@ -83,10 +82,13 @@ class Spaceship(pygame.sprite.Sprite):
             self.rect.bottom = HEIGHT
 
     def shoot(self):
-        bullet = Bullet(self.rect.centerx, self.rect.top)
-        all_sprites.add(bullet)
-        BULLETS.add(bullet)
-        shoot_sound.play()
+        now = pygame.time.get_ticks()
+        if now - self.last_shot > self.shoot_delay:
+            self.last_shot = now
+            bullet = Bullet(self.rect.centerx, self.rect.top)
+            all_sprites.add(bullet)
+            BULLETS.add(bullet)
+            shoot_sound.play()
 
 
 # Meteor class for enemies
@@ -227,9 +229,6 @@ while running:
         # Check for closing window
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                PLAYER.shoot()
 
     # Update
     all_sprites.update()
